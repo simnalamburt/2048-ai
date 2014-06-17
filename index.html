@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>2048 AI</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <!--[if lt IE 9]>
+    <script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+      nav.navbar .navbar-link {
+        font-style: italic;
+      }
+
+      #grid {
+        float: left;
+        margin-top: 40px;
+
+        padding: 2px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+      }
+
+      #grid div {
+        width: 96px;
+        height: 96px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        margin: 2px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#2048-ai-header">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">2048 AI</span>
+        </div>
+        <div class="collapse navbar-collapse" id="2048-ai-header">
+          <p class="navbar-text navbar-right">Made by <a href="http://hyeon.me" class="navbar-link">Hyeon, Kim</a></p>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <div id="grid">
+        <table>
+          <tr>
+            <td><div id="0-0"></div></td>
+            <td><div id="0-1"></div></td>
+            <td><div id="0-2"></div></td>
+            <td><div id="0-3"></div></td>
+          </tr>
+          <tr>
+            <td><div id="1-0"></div></td>
+            <td><div id="1-1"></div></td>
+            <td><div id="1-2"></div></td>
+            <td><div id="1-3"></div></td>
+          </tr>
+          <tr>
+            <td><div id="2-0"></div></td>
+            <td><div id="2-1"></div></td>
+            <td><div id="2-2"></div></td>
+            <td><div id="2-3"></div></td>
+          </tr>
+          <tr>
+            <td><div id="3-0"></div></td>
+            <td><div id="3-1"></div></td>
+            <td><div id="3-2"></div></td>
+            <td><div id="3-3"></div></td>
+          </tr>
+        </table>
+      </div><!-- div#grid -->
+    </div>
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script>
+      $(function() {
+        'use strict';
+
+        var grid = [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+        ];
+      });
+    </script>
+  </body>
+</html>
