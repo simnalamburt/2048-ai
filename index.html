@@ -114,6 +114,25 @@
           var val = grid[y][x];
           if (val) $('#'+y+'-'+x).text(val);
         }
+
+        $(window).keydown(function(e) {
+          e.preventDefault();
+
+          switch(e.which) {
+          case 37: // Left
+            console.log('left');
+            break;
+          case 39: // Right
+            console.log('right');
+            break;
+          case 38: // Up
+            console.log('up');
+            break;
+          case 40: // Down
+            console.log('down');
+            break;
+          }
+        });
       });
     </script>
   </body>
