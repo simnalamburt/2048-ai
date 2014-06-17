@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>2048 AI</title>
+    <title>Dummy 2048</title>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <!--[if lt IE 9]>
@@ -10,49 +10,49 @@
     <script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-      nav.navbar .navbar-link {
-        font-style: italic;
+      body {
+        margin: 80px 0;
+      }
+
+      #app {
+        width: 422px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #app > h1 {
+        font-size: 80px;
       }
 
       #grid {
-        float: left;
         margin-top: 40px;
 
         padding: 2px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
+        border: 1px solid #ccc;
         border-radius: 8px;
       }
 
       #grid div {
-        width: 96px;
-        height: 96px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
         margin: 2px;
         border-radius: 4px;
+
+        line-height: 96px;
+        text-align: center;
+        font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+        font-size: 35px;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-      <div class="container">
+    <div id="app">
 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#2048-ai-header">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <span class="navbar-brand">2048 AI</span>
-        </div>
-        <div class="collapse navbar-collapse" id="2048-ai-header">
-          <p class="navbar-text navbar-right">Made by <a href="http://hyeon.me" class="navbar-link">Hyeon, Kim</a></p>
-        </div>
+      <h1><small>Dummy</small> 2048</h1>
+      <p>Made by Hyeon, Kim</p>
 
-      </div>
-    </nav>
-
-    <div class="container">
       <div id="grid">
         <table>
           <tr>
@@ -81,7 +81,8 @@
           </tr>
         </table>
       </div><!-- div#grid -->
-    </div>
+
+    </div><!-- div#app -->
 
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -90,11 +91,16 @@
         'use strict';
 
         var grid = [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
+          [null, null, null, null],
+          [   2, null, null, null],
+          [null, null, null,    2],
+          [null, null, null, null],
         ];
+
+        for (var y=0; y<4; ++y) for (var x=0; x<4; ++x) {
+          var val = grid[y][x];
+          if (val) $('#'+y+'-'+x).text(val);
+        }
       });
     </script>
   </body>
