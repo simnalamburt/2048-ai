@@ -100,9 +100,10 @@
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script>
-      $(function() {
-        'use strict';
+      'use strict';
 
+      // Game object
+      var game = (function() {
         var grid = [
           [null, null, null, null],
           [   2, null, null, null],
@@ -110,28 +111,52 @@
           [null, null, null, null],
         ];
 
-        for (var y=0; y<4; ++y) for (var x=0; x<4; ++x) {
-          var val = grid[y][x];
-          if (val) $('#'+y+'-'+x).text(val);
-        }
+        return {
+          // game.forEach( function(row, col, value) { ... } );
+          forEach: function(handler) {
+            for (var row = 0; row < 4; ++row) for (var col = 0; col < 4; ++col) {
+              var value = grid[row][col];
+              if (!value) continue;
+              handler(row, col, value);
+            }
+          },
+
+          // game.move(game.left);
+          // game.move(event.which);
+          left:  37,
+          up:    38,
+          right: 39,
+          down:  40,
+          move: function(cmd) {
+            switch(cmd) {
+            case this.left:
+              console.log('왼쪽');
+              break;
+            case this.right:
+              console.log('오른쪽');
+              break;
+            case this.up:
+              console.log('위');
+              break;
+            case this.down:
+              console.log('아래');
+              break;
+            }
+          },
+        };
+      })();
+
+
+      // UI controller
+      $(function() {
+        game.forEach(function(row, col, value) {
+          $('#'+row+'-'+col).text(value);
+        });
 
         $(window).keydown(function(e) {
           e.preventDefault();
 
-          switch(e.which) {
-          case 37: // Left
-            console.log('left');
-            break;
-          case 39: // Right
-            console.log('right');
-            break;
-          case 38: // Up
-            console.log('up');
-            break;
-          case 40: // Down
-            console.log('down');
-            break;
-          }
+          game.move(e.which);
         });
       });
     </script>
