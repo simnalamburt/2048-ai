@@ -57,14 +57,9 @@
         down:  40,
       };
 
-      // Game object
-      var game = (function() {
-        var grid = [
-          [0, 0, 0, 0],
-          [2, 0, 0, 0],
-          [0, 0, 0, 2],
-          [0, 0, 0, 0],
-        ];
+      // makeGame() closure
+      var makeGame = function(initial) {
+        var grid = initial.slice(0);
 
         return {
           // game.forEach( function(row, col, value) { ... } );
@@ -93,11 +88,18 @@
             }
           },
         };
-      })();
+      };
 
 
       // UI controller
       $(function() {
+        var game = makeGame([
+          [0, 0, 0, 0],
+          [2, 0, 0, 0],
+          [0, 0, 0, 2],
+          [0, 0, 0, 0],
+        ]);
+
         var present = function() {
           game.forEach(function(row, col, value) {
             $('#'+row+'-'+col).text(value ? value : '');
