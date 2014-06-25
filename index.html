@@ -164,14 +164,19 @@
 
       // UI controller
       $(function() {
-        game.forEach(function(row, col, value) {
-          $('#'+row+'-'+col).text(value);
-        });
+        var present = function() {
+          game.forEach(function(row, col, value) {
+            $('#'+row+'-'+col).text(value);
+          });
+        };
+
+        present();
 
         $(window).keydown(function(e) {
           e.preventDefault();
 
           game.move(e.which);
+          present();
         });
       });
     </script>
