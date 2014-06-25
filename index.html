@@ -113,6 +113,14 @@
     <script>
       'use strict';
 
+      // Constants
+      var direction = {
+        left:  37,
+        up:    38,
+        right: 39,
+        down:  40,
+      };
+
       // Game object
       var game = (function() {
         var grid = [
@@ -134,22 +142,18 @@
 
           // game.move(game.left);
           // game.move(event.which);
-          left:  37,
-          up:    38,
-          right: 39,
-          down:  40,
           move: function(cmd) {
             switch(cmd) {
-            case this.left:
+            case direction.left:
               console.log('왼쪽');
               break;
-            case this.right:
+            case direction.right:
               console.log('오른쪽');
               break;
-            case this.up:
+            case direction.up:
               console.log('위');
               break;
-            case this.down:
+            case direction.down:
               console.log('아래');
               break;
             }
