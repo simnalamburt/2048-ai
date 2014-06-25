@@ -38,6 +38,18 @@ var makeGame = function(initial) {
         break;
       }
     },
+
+    spawn: function() {
+      var available = [];
+      this.forEach(function(row, col, value) {
+        if (value) return;
+
+        available.push({ row: row, col: col });
+      });
+
+      var pick = available[Math.floor(Math.random() * available.length)];
+      grid[pick.row][pick.col] = Math.random() < 0.9 ? 2 : 4;
+    },
   };
 };
 
@@ -63,6 +75,7 @@ $(function() {
     e.preventDefault();
 
     game.move(e.which);
+    game.spawn();
     present();
   });
 });
