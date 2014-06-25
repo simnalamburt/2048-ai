@@ -134,9 +134,7 @@
           // game.forEach( function(row, col, value) { ... } );
           forEach: function(handler) {
             for (var row = 0; row < 4; ++row) for (var col = 0; col < 4; ++col) {
-              var value = grid[row][col];
-              if (!value) continue;
-              handler(row, col, value);
+              handler(row, col, grid[row][col]);
             }
           },
 
@@ -166,7 +164,7 @@
       $(function() {
         var present = function() {
           game.forEach(function(row, col, value) {
-            $('#'+row+'-'+col).text(value);
+            $('#'+row+'-'+col).text(value ? value : '');
           });
         };
 
