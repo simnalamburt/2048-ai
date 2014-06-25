@@ -23,20 +23,82 @@ var makeGame = function(initial) {
     // game.move(game.left);
     // game.move(event.which);
     move: function(cmd) {
-      switch(cmd) {
-      case direction.left:
-        console.log('왼쪽');
-        break;
-      case direction.right:
-        console.log('오른쪽');
-        break;
-      case direction.up:
-        console.log('위');
-        break;
-      case direction.down:
-        console.log('아래');
-        break;
+      var adapter = (function() {
+        var getc, setc;
+
+        switch(cmd) {
+        case direction.left:
+          getc = function(it, i)      { return grid[it][i]; };
+          setc = function(it, i, val) {        grid[it][i] = val; };
+          break;
+        case direction.right:
+          getc = function(it, i)      { return grid[it][3-i]; };
+          setc = function(it, i, val) {        grid[it][3-i] = val; };
+          break;
+        case direction.up:
+          getc = function(it, i)      { return grid[i][it]; };
+          setc = function(it, i, val) {        grid[i][it] = val; };
+          break;
+        case direction.down:
+          getc = function(it, i)      { return grid[3-i][it]; };
+          setc = function(it, i, val) {        grid[3-i][it] = val; };
+          break;
+        }
+
+        return {
+          get: function(it) {
+            var line = [];
+            for (var i = 0; i < 4; ++i) { line.push(getc(it, i)); }
+            return line;
+          },
+          set: function(it, line) {
+            for (var i = 0; i < 4; ++i) { setc(it, i, line[i]); }
+          },
+        };
+      })();
+
+      var moved = false;
+
+      for (var it = 0; it < 4; ++it) {
+        // Fetch a line from the grid
+        var line = adapter.get(it);
+
+        // 2048 logic
+        for (var head = 0; head < 4; ++head) {
+          if (line[head]) {
+            // 1. Try merge with adjacent cell
+            for (var peek = head + 1; peek < 4; ++peek) {
+              if (line[peek] == 0) continue;
+              if (line[peek] != line[head]) break;
+
+              // merge
+              line[head] *= 2;
+              line[peek] = 0;
+
+              moved = true;
+              break;
+            }
+          } else {
+            // 2. Try move adjacent cell to current position
+            for (var peek = head + 1; peek < 4; ++peek) {
+              if (line[peek] == 0) continue;
+
+              // move
+              line[head] = line[peek];
+              line[peek] = 0;
+
+              moved = true;
+              --head; // Make it iterate once again
+              break;
+            }
+          }
+        }
+
+        // Apply the editted line to the grid
+        adapter.set(it, line);
       }
+
+      return moved;
     },
 
     spawn: function() {
@@ -74,8 +136,9 @@ $(function() {
   $(window).keydown(function(e) {
     e.preventDefault();
 
-    game.move(e.which);
-    game.spawn();
-    present();
+    if (game.move(e.which)) {
+      game.spawn();
+      present();
+    }
   });
 });
