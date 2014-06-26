@@ -133,12 +133,17 @@ $(function() {
 
   present();
 
-  $(window).keydown(function(e) {
-    e.preventDefault();
+  var options = [direction.left, direction.right, direction.up, direction.down];
+  var each = function() {
+    var ret = game.move(options[Math.floor(Math.random() * options.length)]);
 
-    if (game.move(e.which)) {
+    if (ret) {
       game.spawn();
       present();
     }
-  });
+
+    setTimeout(each, 100);
+  };
+
+  setTimeout(each, 1000);
 });
