@@ -1,63 +1,74 @@
-* {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-}
+*
+  -webkit-box-sizing border-box
+  -moz-box-sizing border-box
+  box-sizing border-box
 
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-}
 
-h1 {
-  font-size: 80px;
-  font-weight: 500;
-  line-height: 1.1;
-}
+body
+  font-family "Helvetica Neue" Helvetica Arial sans-serif
+  font-size 15px
 
-small {
-  font-size: 65%;
-  font-weight: 400;
-  line-height: 1;
-  color: #999;
-}
 
-#app {
-  width: 422px;
-  margin-left: auto;
-  margin-right: auto;
-}
+h1
+  font-size 80px
+  font-weight 500
+  line-height 1.1
 
-#grid {
-  padding: 2px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
 
-#grid div {
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
+small
+  font-size 65%
+  font-weight 400
+  line-height 1
+  color #999
 
-  text-align: center;
-  font-size: 35px;
-  font-weight: bold;
 
-  border: 1px solid #ccc;
-  margin: 2px;
-  border-radius: 4px;
-}
+grid-size = 422px
+grid-border = 1px
+cell-spacing = 4px
 
-@media (max-width: 500px) {
-  body { margin: 40px 10px; }
+#app
+  width grid-size
+  margin-left auto
+  margin-right auto
 
-  h1 { font-size: 60px; }
 
-  #app { width: 342px; }
+#grid
+  padding (cell-spacing/2)
+  border grid-border solid #ccc
+  border-radius 8px
 
-  #grid div {
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-  }
-}
+  div
+    margin (cell-spacing/2)
+
+    cell-size = (grid-size - grid-border*2 - cell-spacing*5)/4
+    width cell-size
+    height cell-size
+    line-height cell-size
+
+    text-align center
+    font-size 35px
+    font-weight bold
+
+    border 1px solid #ccc
+    border-radius 4px
+
+
+
+// Mobile support
+@media (max-width 500px)
+  body
+    margin 40px 10px
+
+  h1
+    font-size 60px
+
+  grid-size = 342px
+  #app
+    width grid-size
+
+  #grid
+    div
+      cell-size = (grid-size - grid-border*2 - cell-spacing*5)/4
+      width cell-size
+      height cell-size
+      line-height cell-size
