@@ -1,3 +1,4 @@
+``
 'use strict';
 
 // Constants
@@ -147,3 +148,4 @@ $(function() {
 
   setTimeout(each, 1000);
 });
+``

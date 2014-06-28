@@ -24,6 +24,7 @@ open index.html
 * make
 * [node.js](http://nodejs.org/)
 * [stylus](http://learnboost.github.io/stylus/)
+* [LiveScript](http://livescript.net/)
 
 ### Dependencies
 
