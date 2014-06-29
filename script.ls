@@ -1,151 +1,119 @@
-``
-'use strict';
+# Constants
+const direction =
+  left  :37
+  up    :38
+  right :39
+  down  :40
 
-// Constants
-var direction = {
-  left:  37,
-  up:    38,
-  right: 39,
-  down:  40,
-};
-
-// makeGame() closure
-var makeGame = function(initial) {
-  var grid = initial.slice(0);
+# makeGame() closure
+const makeGame = (initial) ->
+  grid = initial.slice(0)
 
   return {
-    // game.forEach( function(row, col, value) { ... } );
-    forEach: function(handler) {
-      for (var row = 0; row < 4; ++row) for (var col = 0; col < 4; ++col) {
-        handler(row, col, grid[row][col]);
-      }
-    },
+    # game.forEach (row, col, value) -> ...
+    forEach: (handler) ->
+      for row from 0 til 4
+        for col from 0 til 4
+          handler(row, col, grid[row][col])
 
-    // game.move(game.left);
-    // game.move(event.which);
-    move: function(cmd) {
-      var adapter = (function() {
-        var getc, setc;
+    # game.move(game.left)
+    # game.move(event.which)
+    move: (cmd) ->
+      adapter = do ->
+        getc = switch cmd
+               | direction.left  => (it, i) -> grid[it][i]
+               | direction.right => (it, i) -> grid[it][3-i]
+               | direction.up    => (it, i) -> grid[i][it]
+               | direction.down  => (it, i) -> grid[3-i][it]
 
-        switch(cmd) {
-        case direction.left:
-          getc = function(it, i)      { return grid[it][i]; };
-          setc = function(it, i, val) {        grid[it][i] = val; };
-          break;
-        case direction.right:
-          getc = function(it, i)      { return grid[it][3-i]; };
-          setc = function(it, i, val) {        grid[it][3-i] = val; };
-          break;
-        case direction.up:
-          getc = function(it, i)      { return grid[i][it]; };
-          setc = function(it, i, val) {        grid[i][it] = val; };
-          break;
-        case direction.down:
-          getc = function(it, i)      { return grid[3-i][it]; };
-          setc = function(it, i, val) {        grid[3-i][it] = val; };
-          break;
-        }
+        setc = switch cmd
+               | direction.left  => (it, i, val) -> grid[it][i] = val
+               | direction.right => (it, i, val) -> grid[it][3-i] = val
+               | direction.up    => (it, i, val) -> grid[i][it] = val
+               | direction.down  => (it, i, val) -> grid[3-i][it] = val
 
         return {
-          get: function(it) {
-            var line = [];
-            for (var i = 0; i < 4; ++i) { line.push(getc(it, i)); }
-            return line;
-          },
-          set: function(it, line) {
-            for (var i = 0; i < 4; ++i) { setc(it, i, line[i]); }
-          },
-        };
-      })();
-
-      var moved = false;
-
-      for (var it = 0; it < 4; ++it) {
-        // Fetch a line from the grid
-        var line = adapter.get(it);
-
-        // 2048 logic
-        for (var head = 0; head < 4; ++head) {
-          if (line[head]) {
-            // 1. Try merge with adjacent cell
-            for (var peek = head + 1; peek < 4; ++peek) {
-              if (line[peek] == 0) continue;
-              if (line[peek] != line[head]) break;
-
-              // merge
-              line[head] *= 2;
-              line[peek] = 0;
-
-              moved = true;
-              break;
-            }
-          } else {
-            // 2. Try move adjacent cell to current position
-            for (var peek = head + 1; peek < 4; ++peek) {
-              if (line[peek] == 0) continue;
-
-              // move
-              line[head] = line[peek];
-              line[peek] = 0;
-
-              moved = true;
-              --head; // Make it iterate once again
-              break;
-            }
-          }
+          get: (it) ->
+            line = [0 0 0 0]
+            for i from 0 til 4
+              line[i] = getc(it, i)
+            return line
+          set: (it, line) ->
+            for i from 0 til 4
+              setc(it, i, line[i])
         }
 
-        // Apply the editted line to the grid
-        adapter.set(it, line);
-      }
+      moved = false
 
-      return moved;
-    },
+      for it from 0 til 4
+        # Fetch a line from the grid
+        line = adapter.get(it)
 
-    spawn: function() {
-      var available = [];
-      this.forEach(function(row, col, value) {
-        if (value) return;
+        # 2048 logic
+        for head from 0 til 4
+          if line[head] != 0
+            # 1. Try merge with adjacent cell
+            for peek from head + 1 til 4
+              continue if line[peek] == 0
+              break unless line[head] == line[peek]
 
-        available.push({ row: row, col: col });
-      });
+              # merge
+              line[head] *= 2
+              line[peek] = 0
 
-      var pick = available[Math.floor(Math.random() * available.length)];
-      grid[pick.row][pick.col] = Math.random() < 0.9 ? 2 : 4;
-    },
-  };
-};
+              moved := true
+              break
+          else
+            # 2. Try move adjacent cell to current position
+            for peek from head + 1 til 4
+              continue if line[peek] == 0
+
+              # move
+              line[head] = line[peek]
+              line[peek] = 0
+
+              moved := true
+              --head # Make it iterate once again
+              break
+
+        # Apply the editted line to the grid
+        adapter.set(it, line)
+
+      return moved
+
+    spawn: ->
+      available = []
+      @forEach (row, col, value) ->
+        return if value != 0
+        available.push { row: row, col: col };
+
+      pick = available[Math.floor(Math.random() * available.length)]
+      grid[pick.row][pick.col] = | Math.random() < 0.9 => 2
+                                 | _                   => 4
+  }
 
 
-// UI controller
-$(function() {
-  var game = makeGame([
-    [0, 0, 0, 0],
-    [2, 0, 0, 0],
-    [0, 0, 0, 2],
-    [0, 0, 0, 0],
-  ]);
+# UI controller
+$ ->
+  game = makeGame [
+    [0 0 0 0]
+    [2 0 0 0]
+    [0 0 0 2]
+    [0 0 0 0]
+  ]
 
-  var present = function() {
-    game.forEach(function(row, col, value) {
-      $('#'+row+'-'+col).text(value ? value : '');
-    });
-  };
+  present = ->
+    game.forEach (row, col, num) ->
+      $('#'+row+'-'+col).text switch | num != 0 => num
+                                     | _        => ''
 
-  present();
+  present!
 
-  var options = [direction.left, direction.right, direction.up, direction.down];
-  var each = function() {
-    var ret = game.move(options[Math.floor(Math.random() * options.length)]);
+  each = ->
+    if game.move(direction[Object.keys(direction)[Math.floor(Math.random() * Object.keys(direction).length)]])
+      game.spawn!
+      present!
 
-    if (ret) {
-      game.spawn();
-      present();
-    }
+    setTimeout(each, 100)
 
-    setTimeout(each, 100);
-  };
-
-  setTimeout(each, 1000);
-});
-``
+  setTimeout(each, 1000)
